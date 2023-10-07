@@ -1,5 +1,4 @@
 from rest_framework import permissions
-from api.models.project import project
 
 class IsMemberAdminCreator(permissions.BasePermission):
     message = "You don't have permission to perform this action."

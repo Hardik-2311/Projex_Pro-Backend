@@ -1,13 +1,13 @@
 from rest_framework import viewsets, status
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
-from api.models import *
+from api.serializers.projectSerializer import ProjectSerializer
 from api.serializers import *
 
 
 class ProjectViewSet(viewsets.ModelViewSet):
 
-    serializer_class = projectSerializer
+    serializer_class = ProjectSerializer
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
@@ -34,7 +34,8 @@ class ProjectViewSet(viewsets.ModelViewSet):
         serializer = self.serializer_class(instance, data=request.data)
         if serializer.is_valid():
             members = serializer.validated_data.get('project_members', [])
-            instance.project_members.set(members)
+            instance.project_members.set(members) 
             instance.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+

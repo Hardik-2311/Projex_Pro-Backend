@@ -15,4 +15,4 @@ class project(models.Model):
     date_created = models.DateField(auto_now_add = True)
     finished_status = models.BooleanField(default = False)
     def __str__(self):
-        return f"Project : {self.name}, created by : {self.creator.full_name}"
+        return f"Project : {self.name}, created by : {self.creator.username}"
