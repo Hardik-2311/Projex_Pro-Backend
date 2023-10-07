@@ -7,7 +7,7 @@ from api.serializers import *
 
 class ProjectViewSet(viewsets.ModelViewSet):
 
-    serializer_class = ProjectSerializer
+    serializer_class = projectSerializer
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):

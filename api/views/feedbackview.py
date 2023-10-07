@@ -1,6 +1,6 @@
 from rest_framework import viewsets
 from api.models import feedback
-from api.serializers import feedbackSerializer
+from api.serializers.feedbackserializer import feedbackSerializer
 from api.permissions import IsAdminToPerformFeedbackActions
 from rest_framework.response import Response
 from rest_framework import status

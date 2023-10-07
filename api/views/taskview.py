@@ -1,28 +1,39 @@
-from rest_framework import viewsets, status
-from api.models import task, project
+from rest_framework import generics
+from api.models.task import task
+from api.serializers.Taskserializer import taskSerializer
+from api.serializers.userSerial import userSerializer
+from rest_framework import status
 from rest_framework.response import Response
-from api.serializers import taskSerializer
-from rest_framework.authentication import SessionAuthentication
-from rest_framework.permissions import IsAuthenticated
-from api.permissions import IsMemberAdminCreator 
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
 
-class TaskViewSet(viewsets.ModelViewSet):
-
-    queryset = task.objects.all()
+class taskCreateOrListViewSet(generics.ListCreateAPIView):
     serializer_class = taskSerializer
-    authentication_classes = [SessionAuthentication]
-    permission_classes = [IsAuthenticated, IsMemberAdminCreator]
+    permission_classes = [IsAuthenticated, IsAdminUser]
 
-    def create(self, request, *args, **kwargs):
-        current_user = request.user
-        project_id = request.data.get('id')
-        current_project = project.objects.get(pk=project_id)
+    def get_queryset(self):
+        project_id = self.kwargs['project_id']
+        return task.objects.filter(project__id=project_id)
 
-        if current_user.is_superuser or current_project.project_members.filter(username=current_user.username).exists() or current_project.creator == current_user:
-            serializer = taskSerializer(data=request.data)
-            if serializer.is_valid():
-                serializer.save(creator=current_user, project=current_project)
-                return Response(serializer.data, status=status.HTTP_201_CREATED)
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        
-        return Response({"error": "You don't have access to create a task in this project."}, status=status.HTTP_403_FORBIDDEN)
+    def perform_create(self, serializer):
+        project_id = self.kwargs['project_id']
+        project = project.objects.get(id=project_id)
+        serializer.save(creator=self.request.user, project=project)
+
+class taskDetailViewSet(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = taskSerializer
+    permission_classes = [IsAuthenticated, IsAdminUser]
+    lookup_url_kwarg = 'task_id'
+    http_method_names = ['get', 'post', 'head', 'patch', 'delete']
+
+    def get_queryset(self):
+        project_id = self.kwargs['project_id']
+        return task.objects.filter(project__id=project_id)
+
+    def retrieve(self, request, *args, **kwargs):
+        queryset = task.objects.all()
+        task = generics.get_object_or_404(queryset, pk=self.kwargs['task_id'])
+        serializer = taskSerializer(task)
+        res_dict = serializer.data
+        res_dict['creator'] = userSerializer(task.creator).data
+        res_dict['project_creator'] = userSerializer(task.project.creator).data
+        return Response(res_dict, status=status.HTTP_200_OK)

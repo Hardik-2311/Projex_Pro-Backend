@@ -14,5 +14,6 @@ r2.register(r"user",UserViewSet, basename="user")
 urlpatterns = [
     path('',include(r2.urls)),
     path('',include(r1.urls)),
-    path('login',login_direct)
+    path('login',login_direct),
+    
 ]
