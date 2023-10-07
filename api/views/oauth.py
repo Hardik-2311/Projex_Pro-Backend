@@ -54,7 +54,7 @@ def check_login(request):
 
 
 @api_view(["GET"])
-def oauth2_login(req):
+def oauth_login(req):
     parameters = {
         "client_id": CLIENT_ID,
         "client_secret": CLIENT_SECRET_ID,
@@ -123,6 +123,6 @@ def login(request):
     return Response({"message":"Check Your Credentials"})
    
 @api_view(['GET'])
-def logout_pass(request):
+def logout(request):
    logout(request)
    return Response({"message":"LOGGED OUT SUCCESSFULLY"}, status=status.HTTP_200_OK)

@@ -38,7 +38,6 @@ urlpatterns = [
     path('goal/<int:goal_id>/',GoalDetail.as_view()),
     path('feedback/',my_view),
     path('feedback/<int:feedback_id>/',my_view2),
-
     path('logout',logout)
 
 ]
