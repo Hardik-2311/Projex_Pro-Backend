@@ -81,6 +81,7 @@ def oauth_login(req):
         year = user["student"]["currentYear"]
         email = user["contactInformation"]["emailAddress"]
         enrolment_no = user["student"]["enrolmentNumber"]
+       
 
         is_Member = False
         # check if the user has maintainer role or not
@@ -94,6 +95,9 @@ def oauth_login(req):
                 print(user)
             except:
                 return Response("unable to create user")
+            if is_Member:
+                user.is_admin = True
+                user.save()
             try:
                 req.session["username"] = username
                 req.session["name"] = name
@@ -101,8 +105,10 @@ def oauth_login(req):
                 req.session["email"] = email
                 req.session["enrolment_no"] = enrolment_no
                 req.session["is_Member"] = is_Member
+               
                 login(req, user)
                 return Response("LOGGED IN")
+                
             except:
                 return Response("Not logged in successfully")
         else:

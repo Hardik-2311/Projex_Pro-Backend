@@ -9,6 +9,7 @@ class User(AbstractUser):
   enrolment_no=models.CharField(max_length=8)
   is_Member=models.BooleanField(default=True)
   profile_pic=models.ImageField(upload_to='user_profile_pics/',null=True,blank=True)
+
   class Meta:
     verbose_name_plural='Users'
   def __str__(self):
