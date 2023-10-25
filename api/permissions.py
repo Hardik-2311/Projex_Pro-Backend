@@ -26,7 +26,7 @@ from rest_framework import permissions
 class IsAdminToCreateGoal(permissions.BasePermission):
     message = "Only admin users can create goals."
     def has_permission(self, request, view):
-        return request.user.is_superuser
+        return request.user.is_admin
 
 from rest_framework import permissions
 
