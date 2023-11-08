@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/4.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
-APPEND_SLASH=False 
+APPEND_SLASH = False
 
 from pathlib import Path
 
@@ -39,24 +39,33 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "corsheaders",
     "rest_framework",
     "ckeditor",
     "api",
     "oauth2_provider",
 ]
-
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
-    'corsheaders.middleware.CorsMiddleware',
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
+    "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
+
 ROOT_URLCONF = "backend.urls"
+
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework.authentication.BasicAuthentication",
+        "rest_framework.authentication.SessionAuthentication",
+    ]
+}
 AUTH_USER_MODEL = "api.user"
 TEMPLATES = [
     {
@@ -76,19 +85,17 @@ TEMPLATES = [
 
 # WSGI_APPLICATION = "backend.wsgi.application"
 ASGI_APPLICATION = "backend.asgi.application"
-
-SESSION_ENGINE = 'django.contrib.sessions.backends.db'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 DATABASES = {
-   'default': {
-       'ENGINE': 'django.db.backends.postgresql',
-       'NAME': 'backend',
-       'USER': 'postgres',
-       'PASSWORD': 'hardik',
-       'HOST': 'localhost',
-       'PORT': '5432',
-   }
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": "backend",
+        "USER": "postgres",
+        "PASSWORD": "hardik",
+        "HOST": "localhost",
+        "PORT": "5432",
+    }
 }
 CHANNEL_LAYERS = {
     "default": {
@@ -138,3 +145,35 @@ STATIC_URL = "static/"
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
+# settings.py
+
+CORS_ALLOW_METHODS = [
+    "DELETE",  # Add 'DELETE' to the allowed methods
+    "GET",
+    "OPTIONS",
+    "PATCH",
+    "POST",
+    "PUT",
+]
+
+# You can also configure the CORS_ORIGIN_WHITELIST to allow specific origins
+CORS_ALLOW_CREDENTIALS = True
+CORS_ORIGIN_ALLOW_ALL = False
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",  # Add the origin of your frontend application
+    # Add other allowed origins as needed
+]
+
+# CORS_ALLOWED_ORIGINS = [
+#     "http://localhost:3000",
+#     "http://localhost:8000",
+#     "http://127.0.0.1:3000",
+#     "http://127.0.0.1:8000",
+# ]
+
+# CORS_ALLOW_METHODS = [
+#     "DELETE",  # Add DELETE to the list of allowed methods
+#     "GET",
+#     "POST",
+#     "PUT",
+# ]

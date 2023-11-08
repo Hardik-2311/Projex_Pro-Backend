@@ -7,14 +7,17 @@ from api.views.taskview import TaskDetailViewSet
 from api.views.goalview import GoalDetail
 from rest_framework import routers
 from api.views.feedbackview import FeedbackDetailViewSet
-from api.views.oauth import login_direct,logout
+from api.views.oauth import login_direct, logout
+
 app_name = "ProjexPro"
 router = routers.DefaultRouter()
-router.register('users',UserViewSet)
-router.register('task',TaskDetailViewSet)
-router.register('goal',GoalDetail)
-router.register('projects',ProjectViewSet)
-router.register('feedback',FeedbackDetailViewSet)
+router.register("task", TaskDetailViewSet)
+router.register(
+    "goal",
+    GoalDetail
+)
+router.register("projects", ProjectViewSet)
+router.register("feedback", FeedbackDetailViewSet)
 
 # my_view2 = FeedbackDetailViewSet.as_view({
 #     'get': 'list',
@@ -34,7 +37,7 @@ router.register('feedback',FeedbackDetailViewSet)
 #     'put': 'update',
 #     'patch': 'partial_update',
 #     'delete': 'destroy'}),),
-   
+
 #     path('login',login_direct),
 #     path('task/',TaskDetailViewSet.as_view({'get': 'list',
 #     'post': 'create',
@@ -50,7 +53,8 @@ router.register('feedback',FeedbackDetailViewSet)
 #     path('logout',logout)
 
 urlpatterns = [
-    path('',include(router.urls)),
-    path('login',login_direct),
-    path('logout',logout)
+    path("", include(router.urls)),
+    path("user",UserViewSet.as_view({'get': 'list'}),name="user"),
+    path("login", login_direct),
+    path("logout", logout),
 ]
