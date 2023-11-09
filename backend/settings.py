@@ -90,7 +90,7 @@ ASGI_APPLICATION = "backend.asgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": "backend",
+        "NAME": "Hardik",
         "USER": "postgres",
         "PASSWORD": "hardik",
         "HOST": "localhost",

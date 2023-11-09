@@ -24,4 +24,4 @@ class feedback(models.Model):
     is_edited = models.BooleanField(default = False)
     
     def __str__(self):
-        return f"{self.content} *BY* {self.commentor.username}"
+        return f"{self.content} *BY* {self.commentor.name}"
