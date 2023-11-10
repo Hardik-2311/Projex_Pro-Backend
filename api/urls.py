@@ -24,5 +24,6 @@ urlpatterns = [
     path("login/",login_direct,name="login_direct"),
     path('logout/', logout_direct, name='logout_direct'),
     path('check_login/', check_login, name='check_login'),
+    path('oauth2_login/',oauth_login)
     
 ]
